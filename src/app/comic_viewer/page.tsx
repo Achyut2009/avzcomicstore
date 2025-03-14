@@ -58,7 +58,7 @@ export default function ComicViewer() {
         <div className="space-y-6">
           {Array.from({ length: comic.pages }, (_, i) => (
             <div key={i} className="shadow-lg rounded-lg overflow-hidden">
-              <img
+              <Image
                 src={`/comics/${comic.id}/${i}.jpg`} // Updated path to match your naming convention (0.jpg, 1.jpg, etc.)
                 alt={`Page ${i + 1}`}
                 className="w-full h-auto"
