@@ -37,7 +37,7 @@ export default function Home() {
   useEffect(() => {
     let currentIndex = 0;
     const scrambleInterval = setInterval(() => {
-      setScrambleText((_) => {
+      setScrambleText((prev) => {
         return fullText
           .split("")
           .map((char, index) => {
@@ -111,9 +111,9 @@ export default function Home() {
       {/* Background Grid for Hero Section */}
       <div className={`absolute inset-0 z-0 transform rotate-45 overflow-hidden ${screenWidth < 770 ? "hidden" : ""}`}>
         <div className="grid grid-cols-12 grid-rows-12 gap-2 w-full h-[200vh]">
-          {[...Array(144)].map((_, i) => (
+          {Array.from({ length: 144 }).map((_, index) => (
             <div
-              key={i}
+              key={index}
               className="bg-orange-100 dark:bg-orange-200/20 rounded-lg"
             ></div>
           ))}
@@ -122,9 +122,9 @@ export default function Home() {
 
       {/* Particle Effects */}
       <div className="absolute inset-0 overflow-hidden z-10">
-        {[...Array(30)].map((_, i) => (
+        {Array.from({ length: 30 }).map((_, index) => (
           <motion.div
-            key={i}
+            key={index}
             initial={{ y: 0, x: Math.random() * 100 }}
             animate={{ y: [0, 100, 0], x: [Math.random() * 100, Math.random() * 100] }}
             transition={{ duration: Math.random() * 5 + 5, repeat: Infinity, delay: Math.random() * 2 }}
@@ -293,10 +293,10 @@ export default function Home() {
           {/* Marquee Container */}
           <div className="absolute top-0 left-0 w-[800%] h-full flex gap-8 animate-marquee whitespace-nowrap">
             {/* Comic Cards */}
-            {[...Array(4)].map((_, iteration) =>
-              comicNames.map((name, i) => (
+            {Array.from({ length: 4 }).map((_, iteration) =>
+              comicNames.map((name, index) => (
                 <div
-                  key={`${iteration}-${i}`}
+                  key={`${iteration}-${index}`}
                   className="w-64 h-64 bg-white dark:bg-stone-900 rounded-lg shadow-lg flex flex-col items-center justify-center relative group transition-all transform hover:scale-105 cursor-pointer hover:shadow-xl"
                 >
                   {/* Comic Name */}
