@@ -37,7 +37,7 @@ export default function Home() {
   useEffect(() => {
     let currentIndex = 0;
     const scrambleInterval = setInterval(() => {
-      setScrambleText((prev) => {
+      setScrambleText(() => {
         return fullText
           .split("")
           .map((char, index) => {
