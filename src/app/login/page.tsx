@@ -13,7 +13,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [resetMode, setResetMode] = useState(false);
-  const [loading, setLoading] = useState(false); // New state for delay effect
+  const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const router = useRouter();
 
@@ -21,11 +21,14 @@ export default function Login() {
     e.preventDefault();
     setError(null);
     try {
-      const user = await loginWithEmailPassword(email, password);
-      console.log("User logged in: ", user);
+      await loginWithEmailPassword(email, password);
       router.push("/dashboard");
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unknown error occurred during login.");
+      }
     }
   };
 
@@ -38,11 +41,11 @@ export default function Login() {
     try {
       await resetPassword(email);
       setSuccessMessage("Password reset link sent! Check your email.");
-    } catch (error: any) {
-      if (error.code === "auth/user-not-found") {
-        setError("Sorry, account not found.");
-      } else {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
         setError(error.message);
+      } else {
+        setError("An unknown error occurred during password reset.");
       }
     } finally {
       setLoading(false);
@@ -51,16 +54,10 @@ export default function Login() {
 
   const toggleResetMode = () => {
     setLoading(true);
-    document.title = "Redirecting...";
-    const favicon = document.querySelector("link[rel~='icon']");
-    if (favicon) favicon.setAttribute("href", "/redirecting-icon.ico");
-
     setTimeout(() => {
       setResetMode(!resetMode);
       setError(null);
       setSuccessMessage(null);
-      document.title = "Login"; // Reset back to normal title
-      if (favicon) favicon.setAttribute("href", "/favicon.ico");
       setLoading(false);
     }, 1500); // 1.5-second delay
   };
@@ -136,7 +133,7 @@ export default function Login() {
 
         {!resetMode && (
           <p className="text-white text-center mt-4">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/signup" className="text-gray-400 hover:underline">
               Sign Up
             </Link>
