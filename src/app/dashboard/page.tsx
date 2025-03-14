@@ -20,7 +20,7 @@ export default function Dashboard() {
   const [activeSection, setActiveSection] = useState<"welcome" | "comics">("welcome");
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [resetEmailSent, setResetEmailSent] = useState(false);
+  const [setResetEmailSent] = useState(false);
   const [isResettingPassword, setIsResettingPassword] = useState(false);
   const [isPageLoaded, setIsPageLoaded] = useState(false); // New state to track page load
   const [modalOpen, setModalOpen] = useState(false); // State for search modal
