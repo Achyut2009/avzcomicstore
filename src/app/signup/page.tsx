@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { signUpWithEmailPassword } from "../../lib/firebase";
 import { useRouter } from "next/navigation";
@@ -24,14 +24,14 @@ export default function Signup() {
       const message = await signUpWithEmailPassword(email, password);
       setSuccess(message); // Success message (string)
       router.push("/dashboard"); // Redirect to dashboard after successful sign-up
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unknown error occurred during sign-up.");
+      }
     }
   };
-
-  useEffect(() => {
-    router.prefetch("/login");
-  }, [router]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-animate-gradient p-4">
@@ -44,8 +44,8 @@ export default function Signup() {
         <h2 className="text-white text-3xl font-bold text-center mb-6">Create an Account</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && <div className="text-red-500">{error}</div>}
-          {success && <div className="text-green-500">{success}</div>} {/* Success message */}
-          
+          {success && <div className="text-green-500">{success}</div>}
+
           <div>
             <label className="text-white block mb-1">Email</label>
             <input
