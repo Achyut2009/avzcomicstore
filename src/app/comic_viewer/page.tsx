@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image"; // Import the Image component
 
 type Comic = {
   id: number;
@@ -58,10 +59,14 @@ export default function ComicViewer() {
         <div className="space-y-6">
           {Array.from({ length: comic.pages }, (_, i) => (
             <div key={i} className="shadow-lg rounded-lg overflow-hidden">
+              {/* Replace <img> with <Image /> */}
               <Image
                 src={`/comics/${comic.id}/${i}.jpg`} // Updated path to match your naming convention (0.jpg, 1.jpg, etc.)
                 alt={`Page ${i + 1}`}
+                width={800} // Set the width of the image
+                height={1200} // Set the height of the image
                 className="w-full h-auto"
+                priority={i === 0} // Add priority to the first image for faster loading
               />
             </div>
           ))}
