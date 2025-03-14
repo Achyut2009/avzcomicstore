@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { FaUser, FaBook, FaBars, FaTimes, FaSearch, FaSignOutAlt, FaTrash, FaRedo, FaEye, FaEdit, FaEnvelope, FaKey, FaSun, FaMoon } from "react-icons/fa";
+import { FaUser, FaBook, FaBars, FaTimes, FaSearch, FaSignOutAlt, FaTrash, FaEye, FaEnvelope, FaKey, FaSun, FaMoon } from "react-icons/fa";
 import { auth } from "../../lib/firebase";
 import { resetPassword } from "../../lib/firebase"; // Import the resetPassword function
 
