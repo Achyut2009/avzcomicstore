@@ -3,7 +3,6 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Plus, Minus } from "lucide-react"; // Removed unused Sun and Moon icons
-import { useRouter } from "next/navigation"; // Import useRouter from next/navigation
 import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
 import Image from "next/image"; // Import Next.js Image component
 
@@ -11,7 +10,7 @@ export default function Home() {
   const { resolvedTheme } = useTheme(); // Removed unused setTheme
   const [mounted, setMounted] = useState(false);
   const [scrambleText, setScrambleText] = useState(""); // State for scramble effect
-  const fullText = "Welcome to AV'z Comicstore"; // Text to display
+  const fullText = "Welcome to AV&apos;z Comicstore"; // Text to display with proper HTML special character
   const [openQuestion, setOpenQuestion] = useState<number | null>(null); // State for FAQ dropdown
   const [screenWidth, setScreenWidth] = useState<number>(0); // State to track screen width
 
@@ -38,7 +37,7 @@ export default function Home() {
   useEffect(() => {
     let currentIndex = 0;
     const scrambleInterval = setInterval(() => {
-      setScrambleText((prevText) => {
+      setScrambleText((_) => {
         return fullText
           .split("")
           .map((char, index) => {
