@@ -212,7 +212,7 @@ export default function Dashboard() {
             <h3 className={`text-2xl font-semibold flex items-center ${darkMode ? "text-white" : "text-neutral-700"}`}>
               Welcome back!
             </h3>
-            <p className={`mt-2 ${darkMode ? "text-white" : "text-neutral-700"}`}>We're glad to have you here!</p>
+            <p className={`mt-2 ${darkMode ? "text-white" : "text-neutral-700"}`}>We&apos;re glad to have you here!</p>
 
             {/* Integrated Settings Options */}
             <div className="mt-6 space-y-4">
