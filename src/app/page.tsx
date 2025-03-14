@@ -2,14 +2,14 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { Sun, Moon, Plus, Minus } from "lucide-react"; // Import Plus and Minus icons
+import { Plus, Minus } from "lucide-react"; // Removed unused Sun and Moon icons
 import { useRouter } from "next/navigation"; // Import useRouter from next/navigation
 import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
+import Image from "next/image"; // Import Next.js Image component
 
 export default function Home() {
-  const { resolvedTheme, setTheme } = useTheme();
+  const { resolvedTheme } = useTheme(); // Removed unused setTheme
   const [mounted, setMounted] = useState(false);
-  const router = useRouter(); // Initialize the router
   const [scrambleText, setScrambleText] = useState(""); // State for scramble effect
   const fullText = "Welcome to AV'z Comicstore"; // Text to display
   const [openQuestion, setOpenQuestion] = useState<number | null>(null); // State for FAQ dropdown
@@ -38,7 +38,7 @@ export default function Home() {
   useEffect(() => {
     let currentIndex = 0;
     const scrambleInterval = setInterval(() => {
-      setScrambleText((prev) => {
+      setScrambleText((prevText) => {
         return fullText
           .split("")
           .map((char, index) => {
@@ -110,7 +110,7 @@ export default function Home() {
       style={{ backgroundColor: resolvedTheme === "dark" ? "oklch(0.269 0 0)" : "#fed7aa" }}
     >
       {/* Background Grid for Hero Section */}
-      <div className={`absolute inset-0 z-0 transform rotate-45 overflow-hidden ${screenWidth < 770 ? 'hidden' : ''}`}>
+      <div className={`absolute inset-0 z-0 transform rotate-45 overflow-hidden ${screenWidth < 770 ? "hidden" : ""}`}>
         <div className="grid grid-cols-12 grid-rows-12 gap-2 w-full h-[200vh]">
           {[...Array(144)].map((_, i) => (
             <div
@@ -187,15 +187,17 @@ export default function Home() {
           >
             {/* Circular Image */}
             <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
-              <img
+              <Image
                 src="/achyut.png" // Replace with Achyut's image URL
                 alt="Achyut Paliwal"
+                width={128}
+                height={128}
                 className="w-full h-full object-cover"
               />
             </div>
             <h2 className="text-2xl font-bold mb-4 text-orange-500">Achyut Paliwal</h2>
             <p className="text-gray-700 dark:text-yellow-100 text-center">
-            The founder of AVz comicstore who is very passionate about programming, web development and writing. He is also the founder and ceo of SkyDark. He had also scored 1st place in the DPS-Modern Indian School hackathon.
+              The founder of AVz comicstore who is very passionate about programming, web development and writing. He is also the founder and ceo of SkyDark. He had also scored 1st place in the DPS-Modern Indian School hackathon.
             </p>
           </motion.div>
 
@@ -209,15 +211,17 @@ export default function Home() {
           >
             {/* Circular Image */}
             <div className="w-32 h-32 rounded-full overflow-hidden mb-4">
-              <img
+              <Image
                 src="/viraj.png" // Replace with Viraj's image URL
                 alt="Viraj Pranshu"
+                width={128}
+                height={128}
                 className="w-full h-full object-cover"
               />
             </div>
             <h2 className="text-2xl font-bold mb-4 text-orange-500">Viraj Pranshu</h2>
             <p className="text-gray-700 dark:text-yellow-100 text-center">
-            A creative writer and co-founder of AVz comicstore bringing stories to life! He is also a very professional badminton player who had won the 1st place in international level in Kuwait.
+              A creative writer and co-founder of AVz comicstore bringing stories to life! He is also a very professional badminton player who had won the 1st place in international level in Kuwait.
             </p>
           </motion.div>
         </div>
