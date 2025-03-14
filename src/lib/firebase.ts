@@ -4,7 +4,9 @@ import {
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
   sendPasswordResetEmail, 
-  signOut 
+  signOut,
+  UserCredential,
+  FirebaseError // Import FirebaseError for proper error typing
 } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
@@ -25,7 +27,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 // Email validation function using AbstractAPI
-const validateEmail = async (email: string) => {
+const validateEmail = async (email: string): Promise<void> => {
   const apiKey = "202560bff1284ff9a609beeaa8d84a1d"; // Replace with your AbstractAPI key
   const url = `https://emailvalidation.abstractapi.com/v1/?api_key=${apiKey}&email=${email}`;
 
@@ -36,68 +38,92 @@ const validateEmail = async (email: string) => {
     if (data.deliverability === "UNDELIVERABLE" || data.is_valid_format.value === false) {
       throw new Error("Email is invalid or does not exist.");
     }
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("An unknown error occurred during email validation.");
+    }
   }
 };
 
 // Sign up function with email validation
-export const signUpWithEmailPassword = async (email: string, password: string) => {
+export const signUpWithEmailPassword = async (email: string, password: string): Promise<string> => {
   try {
     // Validate email before proceeding
     await validateEmail(email);
 
     // Create user with Firebase
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await createUserWithEmailAndPassword(auth, email, password);
     return "Sign-up successful!";
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error: unknown) {
+    if (error instanceof FirebaseError) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("An unknown error occurred during sign-up.");
+    }
   }
 };
 
 // Reset password function
-export const resetPassword = async (email: string) => {
+export const resetPassword = async (email: string): Promise<string> => {
   try {
     await sendPasswordResetEmail(auth, email);
     return "Password reset email sent!";
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error: unknown) {
+    if (error instanceof FirebaseError) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("An unknown error occurred during password reset.");
+    }
   }
 };
 
 // Login function
-export const loginWithEmailPassword = async (email: string, password: string) => {
+export const loginWithEmailPassword = async (email: string, password: string): Promise<string> => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    await signInWithEmailAndPassword(auth, email, password);
     return "Login successful!";
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error: unknown) {
+    if (error instanceof FirebaseError) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("An unknown error occurred during login.");
+    }
   }
 };
 
 // Logout function
-export const logout = async () => {
+export const logout = async (): Promise<string> => {
   try {
     await signOut(auth);
     return "Logout successful!";
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error: unknown) {
+    if (error instanceof FirebaseError) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("An unknown error occurred during logout.");
+    }
   }
 };
 
 // Save reading progress for a comic
-export const saveReadingProgress = async (userId: string, comicId: number, page: number) => {
+export const saveReadingProgress = async (userId: string, comicId: number, page: number): Promise<void> => {
   try {
     await setDoc(doc(db, "users", userId, "comics", comicId.toString()), {
       currentPage: page,
     });
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error: unknown) {
+    if (error instanceof FirebaseError) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("An unknown error occurred while saving reading progress.");
+    }
   }
 };
 
 // Get reading progress for a comic
-export const getReadingProgress = async (userId: string, comicId: number) => {
+export const getReadingProgress = async (userId: string, comicId: number): Promise<number> => {
   try {
     const docRef = doc(db, "users", userId, "comics", comicId.toString());
     const docSnap = await getDoc(docRef);
@@ -106,8 +132,12 @@ export const getReadingProgress = async (userId: string, comicId: number) => {
     } else {
       return 1; // Default to page 1 if no progress is found
     }
-  } catch (error: any) {
-    throw new Error(error.message);
+  } catch (error: unknown) {
+    if (error instanceof FirebaseError) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("An unknown error occurred while fetching reading progress.");
+    }
   }
 };
 
