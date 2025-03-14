@@ -5,8 +5,7 @@ import {
   signInWithEmailAndPassword, 
   sendPasswordResetEmail, 
   signOut,
-  UserCredential,
-  FirebaseError // Import FirebaseError for proper error typing
+  FirebaseError
 } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
@@ -50,10 +49,7 @@ const validateEmail = async (email: string): Promise<void> => {
 // Sign up function with email validation
 export const signUpWithEmailPassword = async (email: string, password: string): Promise<string> => {
   try {
-    // Validate email before proceeding
     await validateEmail(email);
-
-    // Create user with Firebase
     await createUserWithEmailAndPassword(auth, email, password);
     return "Sign-up successful!";
   } catch (error: unknown) {
